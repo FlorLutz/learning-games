@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farben lesen</title>
+</head>
+<body onload="writefirst()">
+    <div class="wrapper">
+<div id="left">
+    <h1><span style="color: #cc1aa3;">Farben lesen</span></h1>
+    <p>Bitte drücke den Knopf, in dieser Farbe:</p>
+    <div id="task" style="font-weight: bold;"></div> <br>
+<!-- Das ist das Textfeld mit Übersendung
+    <input type="text" id="verliebt"> <br>
+    <button onclick="verlZahl ()">Okay!</button>
+-->    
+    <button onclick="colorClicked(1)" style="background-color: yellow; font-weight: bold;">1</button>
+    <button onclick="colorClicked(2)" style="background-color: green; font-weight: bold;">2</button>
+    <button onclick="colorClicked(3)" style="background-color: blue; font-weight: bold;">3</button>
+    <button onclick="colorClicked(4)" style="background-color: red; font-weight: bold;">4</button>
+    <button onclick="colorClicked(5)" style="background-color: pink; font-weight: bold;">5</button> <br>
+    <button onclick="colorClicked(6)" style="background-color: purple; font-weight: bold;">6</button>
+    <button onclick="colorClicked(7)" style="background-color: white; font-weight: bold;">7</button>
+    <button onclick="colorClicked(8)" style="background-color: black; color: white; font-weight: bold;">8</button>
+    <button onclick="colorClicked(9)" style="background-color: turquoise; font-weight: bold;">9</button>
+    <button onclick="colorClicked(10)" style="background-color: orange; font-weight: bold;">10</button>
+    <br>
+    <br>
+    <p id="check"></p>
+</div>
+<div id="right">
+    <p>
+    <span id="punkte"></span>
+    <span id="score" style="font-weight: bold;"></span>
+    </p>
+    <p id="surprise"></p>
+    <img id="image" style="display: none">
+    <a href="main.html">zurück zur Spieleauswahl</a>
+
+</div>
+    </div>
+    <footer>© Florian Lutz 2024</footer>
+    
+    <script>
+        let interval=prompt("Wie viele Richtige für neue Überraschungen?"); // In diesem Intervall gibt es neue Gifs
+        punkte.innerHTML="Punkte (immer bei "+interval+" gibt es eine Überraschung):"
+
+        function randomNumber (min, max) {
+            return Math.floor(Math.random() * (max - min +1)) + min;
+        }
+
+        let colors=["gelb", "grün", "blau", "rot", "rosa", "lila", "weiß", "schwarz", "türkis", "orange"];
+        
+        let colorSelector=randomNumber (0, (colors.length-1)); //creates a Number from 0-7
+        console.log("color number" + colorSelector);
+        
+        let i=0;    //counter
+        score.innerHTML=i;
+
+        let numberOfIntervalls=1; //Intervallspungzähler
+
+        //Hier können alle Bilder und Gifs als Belohnungen eingefügt werden.
+        let imageSourcesArray=["https://i.gifer.com/3tIF.gif", "https://i.gifer.com/15Ra.gif", "https://img1.dreamies.de/img/648/b/1hcuk6g5wyp.gif", "https://img1.picmix.com/output/pic/normal/0/6/8/3/10113860_56dab.gif", "https://giffiles.alphacoders.com/677/67762.gif", "https://cdn.pixabay.com/animation/2023/04/12/17/40/17-40-53-885_512.gif", "https://giffiles.alphacoders.com/478/4788.gif", "https://giffiles.alphacoders.com/672/67200.gif", "https://giffiles.alphacoders.com/148/14896.gif", "https://www.icegif.com/wp-content/uploads/2023/06/icegif-387.gif", "https://www.icegif.com/wp-content/uploads/2023/08/icegif-854.gif", "https://www.icegif.com/wp-content/uploads/2024/01/icegif-54.gif", "https://www.icegif.com/wp-content/uploads/2023/12/icegif-823.gif", "https://www.icegif.com/wp-content/uploads/2023/12/icegif-824.gif", "https://www.icegif.com/wp-content/uploads/2023/12/icegif-829.gif", "https://www.icegif.com/wp-content/uploads/2023/12/icegif-826.gif", "https://www.icegif.com/wp-content/uploads/2023/12/icegif-827.gif", "https://www.icegif.com/wp-content/uploads/2023/12/icegif-670.gif", "https://www.icegif.com/wp-content/uploads/2023/12/icegif-669.gif", "https://cdn.pixabay.com/animation/2022/07/30/22/01/22-01-29-66_512.gif", "https://i0.wp.com/media0.giphy.com/media/8Ry7iAVwKBQpG/giphy.gif", "https://i0.wp.com/media0.giphy.com/media/CDMz3fckRXXDG/giphy.gif"];
+        let imageSource;
+
+        function writefirst () {
+        task.innerHTML=colors[colorSelector];
+    };
+
+        function colorClicked(buttonNumber) {
+            if (buttonNumber==colorSelector+1) {
+            check.innerHTML="🤗 Richtig! Super gemacht! Und schon kommt die nächste Aufgabe. 🦄";
+                i++; //Damit werden die Punkte hinzugeführt.
+                console.log(i);
+                score.innerHTML=i;
+                if (i==interval) {
+                surprise.innerHTML="😀<b>Das ist Deine Überraschung:</b>";
+                document.getElementById("image").style.display="block";
+                imageSource=imageSourcesArray[randomNumber(0, imageSourcesArray.length-1)];
+                document.getElementById("image").src=imageSource;
+                alert("Immer runterscrollen für Überraschung");
+                numberOfIntervalls++;
+            }
+                else if (i==interval*numberOfIntervalls) {
+                surprise.innerHTML="😀<b>Das ist Deine " + numberOfIntervalls + ". Überraschung:</b>";
+                document.getElementById("image").src=imageSourcesArray[randomNumber(0, (imageSourcesArray.length-1))];
+                    //verhindert Wiederholung des gleichen Bilds
+                    let oldImageSource=imageSource;
+                    imageSource=imageSourcesArray[randomNumber(0, (imageSourcesArray.length-1))];
+
+                    while (oldImageSource==imageSource) {
+                    imageSource=imageSourcesArray[randomNumber(0, (imageSourcesArray.length-1))];    
+                }
+                document.getElementById("image").src=imageSource;
+                numberOfIntervalls++;         
+                }
+
+                let oldColorSelector=colorSelector;
+                colorSelector=randomNumber (0, (colors.length-1));
+                while (colorSelector==oldColorSelector) {
+                    colorSelector=randomNumber (0, (colors.length-1));    
+                }
+                console.log(colorSelector);
+                
+                task.innerHTML=colors[colorSelector];
+            }
+            else {
+            check.innerHTML="Das ist leider falsch. Versuch's noch einmal! 😟";
+            }
+            }
+    </script>
+</body>
+</html>

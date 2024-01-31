@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verliebte Zahlen</title>
+</head>
+<body onload="writefirst()">
+    <div class="wrapper">
+<div id="left">
+    <h1><span style="color: #cc1aa3;">Verliebte Zahlen</span></h1>
+    <div id="number"></div> <br>
+    <input type="text" id="verliebt"> <br>
+    <button onclick="verlZahl ()" style="font-weight: bold; width: 60px">Okay</button>
+    <br>
+    <br>
+    <p id="check"></p>
+</div>
+<div id="right">
+    <p>
+    <span id="punkte"></span>
+    <span id="score" style="font-weight: bold;"></span>
+    </p>
+    <p id="surprise"></p>
+    <img id="image" width="400" style="display: none">
+    <a href="main.html">zurück zur Spieleauswahl</a>
+</div>
+    </div>
+    <footer>© Florian Lutz 2024</footer>
+    
+    <script>
+        document.getElementById("verliebt").value="";   //clears input field
+
+        //Entertaste startet auch wie Buttonclick, die Funktion verlZahl()
+        function entertastenPruefung (e) {
+            if (e.key=="Enter") {
+                verlZahl();
+            }
+        }
+        verliebt.onkeypress=entertastenPruefung;
+   
+        let givenNumber=randomNumber(1, 9);  
+
+        function randomNumber (min, max) {
+            return Math.floor(Math.random() * (max - min +1)) + min;
+        }
+
+
+/* Das war der alte Code-Block für die Zufallszahl, der ist aber nicht sauber, weil 1 und 10 weniger wahrscheinlich sind.
+wurde nach https://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range
+mit
+            Math.floor(Math.random() * (max - min +1)) + min
+erstetzt.
+
+        let givenNumber=Math.floor(Math.random() * 10) + 1;
+        while (givenNumber==10) {
+            givenNumber=Math.floor(Math.random() * 10) + 1;
+        };
+        console.log(givenNumber);
+*/
+
+        let interval=prompt("Wie viele Richtige für neue Überraschungen?"); // In diesem Intervall gibt es neue Gifs
+        punkte.innerHTML="Punkte (immer bei "+interval+" gibt es eine Überraschung):"
+        
+        let i=0;    //counter
+        score.innerHTML=i;
+        
+        //Hier können alle Bilder und Gifs als Belohnungen eingefügt werden.
+        let imageSourcesArray=["https://i.gifer.com/3tIF.gif", "https://i.gifer.com/15Ra.gif", "https://img1.dreamies.de/img/648/b/1hcuk6g5wyp.gif", "https://img1.picmix.com/output/pic/normal/0/6/8/3/10113860_56dab.gif", "https://giffiles.alphacoders.com/677/67762.gif", "https://cdn.pixabay.com/animation/2023/04/12/17/40/17-40-53-885_512.gif", "https://giffiles.alphacoders.com/478/4788.gif", "https://giffiles.alphacoders.com/672/67200.gif", "https://giffiles.alphacoders.com/148/14896.gif", "https://www.icegif.com/wp-content/uploads/2023/06/icegif-387.gif", "https://www.icegif.com/wp-content/uploads/2023/08/icegif-854.gif", "https://www.icegif.com/wp-content/uploads/2024/01/icegif-54.gif", "https://www.icegif.com/wp-content/uploads/2023/12/icegif-823.gif", "https://www.icegif.com/wp-content/uploads/2023/12/icegif-824.gif", "https://www.icegif.com/wp-content/uploads/2023/12/icegif-829.gif", "https://www.icegif.com/wp-content/uploads/2023/12/icegif-826.gif", "https://www.icegif.com/wp-content/uploads/2023/12/icegif-827.gif", "https://www.icegif.com/wp-content/uploads/2023/12/icegif-670.gif", "https://www.icegif.com/wp-content/uploads/2023/12/icegif-669.gif", "https://cdn.pixabay.com/animation/2022/07/30/22/01/22-01-29-66_512.gif", "https://i0.wp.com/media0.giphy.com/media/8Ry7iAVwKBQpG/giphy.gif", "https://i0.wp.com/media0.giphy.com/media/CDMz3fckRXXDG/giphy.gif"];        
+        let imageSource;    
+        //console.log("müsste 8 sein: " + (imageSourcesArray.length-1));
+        
+        let numberOfIntervalls=1; //Intervallspungzähler
+
+        function writefirst () {
+        number.innerHTML="Was ist die verliebte Zahl von " + givenNumber + "?";
+    }
+        function verlZahl () {
+            let answer=document.getElementById("verliebt").value;
+            console.log(answer);
+            console.log(Number(givenNumber) + Number(answer));
+            if (Number(givenNumber) + Number(answer) == 10) {
+            check.innerHTML="🤗 Richtig! Super gemacht! Und schon kommt die nächste Aufgabe. 🦄";
+                i++; //Damit werden die Punkte hinzugeführt.
+                console.log("points:" + i);
+                console.log("n: " + numberOfIntervalls);
+                score.innerHTML=i;
+                if (i==interval) {
+                surprise.innerHTML="😀<b>Das ist Deine Überraschung:</b>";
+                document.getElementById("image").style.display="block";
+                imageSource=imageSourcesArray[randomNumber(0, imageSourcesArray.length-1)];
+                document.getElementById("image").src=imageSource;
+                numberOfIntervalls++; //Damit geht es ins nächste Intervall.
+                alert("Immer runterscrollen für Überraschung");
+                }
+                else if (i==interval*numberOfIntervalls) {
+                surprise.innerHTML="😀<b>Das ist Deine " + numberOfIntervalls + ". Überraschung:</b>";
+                document.getElementById("image").src=imageSourcesArray[randomNumber(0, (imageSourcesArray.length-1))];
+                    //verhindert Wiederholung des gleichen Bilds
+                    let oldImageSource=imageSource;
+                    imageSource=imageSourcesArray[randomNumber(0, (imageSourcesArray.length-1))];
+
+                    while (oldImageSource==imageSource) {
+                    imageSource=imageSourcesArray[randomNumber(0, (imageSourcesArray.length-1))];    
+                }
+                document.getElementById("image").src=imageSource;
+                numberOfIntervalls++;         
+                }
+
+                let oldGivenNumber=givenNumber;
+                givenNumber=randomNumber(1, 9);
+
+                //verhindert Wiederholung der gleichen Zahl
+                while (oldGivenNumber==givenNumber) {
+                    givenNumber=randomNumber(1, 9);    
+                }
+                
+                number.innerHTML="Was ist die verliebte Zahl von " + givenNumber + "?";
+                document.getElementById("verliebt").value="";
+            }
+            else {
+            check.innerHTML="Das ist leider falsch. Versuch's noch einmal! 😟";
+                document.getElementById("verliebt").value="";
+            }
+        }
+    </script>
+</body>
+</html>
